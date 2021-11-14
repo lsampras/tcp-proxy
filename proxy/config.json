@@ -1,0 +1,8 @@
+{
+    "rules": [
+        {
+            "url_path": "path",
+            "res": "response"
+        }
+    ]
+}
