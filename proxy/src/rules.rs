@@ -1,6 +1,5 @@
-use std::{convert::Infallible, net::{IpAddr, SocketAddr}};
-// use serde::{Deserialize, Serialize};
-use serde_json;
+use std::{net::{IpAddr, SocketAddr}};
+use serde_json::{self, Error};
 
 #[derive(Debug, Deserialize, Serialize, Clone)]
 pub struct Rule {
@@ -23,10 +22,10 @@ impl Configuration {
 			rules: vec![]
 		}
 	}
-	pub fn from_json(data: String) -> Result<Self, Infallible> {
-		Ok(serde_json::from_str(&data).unwrap())
+	pub fn from_json(data: String) -> Result<Self, Error> {
+		Ok(serde_json::from_str(&data)?)
 	}
-	pub fn to_json(&self) -> Result<String, Infallible> {
-		Ok(serde_json::to_string(self).unwrap())
+	pub fn to_json(&self) -> Result<String, Error> {
+		Ok(serde_json::to_string(self)?)
 	}
 }

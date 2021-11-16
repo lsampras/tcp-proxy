@@ -1,7 +1,6 @@
-use std::{convert::Infallible, fmt::write, io::Read, net::{Incoming, Shutdown, SocketAddr}, pin::Pin, str, sync::{Arc}, task::{Context, Poll}};
-use futures::{future::{self, TryFutureExt}, lock};
-use crate::rules::{Configuration, Rule, Rules};
-use tokio::{io::AsyncWriteExt, join, net::TcpStream, sync::Mutex, time::{Duration, sleep}};
+use std::{net::{SocketAddr}, sync::{Arc}};
+use crate::rules::{Configuration};
+use tokio::{io::AsyncWriteExt, join, net::TcpStream, sync::Mutex};
 use std::io::ErrorKind::WouldBlock;
 
 
