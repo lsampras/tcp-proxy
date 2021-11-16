@@ -1,11 +1,12 @@
-use std::convert::Infallible;
+use std::{convert::Infallible, net::{IpAddr, SocketAddr}};
 // use serde::{Deserialize, Serialize};
 use serde_json;
 
-#[derive(Debug, Deserialize, Serialize)]
+#[derive(Debug, Deserialize, Serialize, Clone)]
 pub struct Rule {
-	pub url_path: String,
-	pub res: String
+	pub source: IpAddr,
+	pub res: String,
+	pub destination: SocketAddr
 }
 
 pub type Rules = Vec<Rule>;

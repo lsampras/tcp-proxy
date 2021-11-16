@@ -1,7 +1,3 @@
-use std::convert::Infallible;
-use std::net::SocketAddr;
-use hyper::{Body, Request, Response, Server, Method, StatusCode};
-use hyper::service::{make_service_fn, service_fn};
 use std::fs;
 use proxy::rules::{Configuration, Rule};
 use proxy::web_service::ProxyServer;
@@ -22,6 +18,9 @@ pub fn read_config(file_name: String) -> String {
 
 #[tokio::main]
 async fn main() {
+    // let rule = Rule {
+    //     source: "127.0.0.1"
+    // }
 
     let args = Cli::from_args();
     let config = match args.rules {
