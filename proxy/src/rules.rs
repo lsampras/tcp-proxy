@@ -4,7 +4,6 @@ use serde_json::{self, Error};
 #[derive(Debug, Deserialize, Serialize, Clone)]
 pub struct Rule {
 	pub source: IpAddr,
-	pub res: String,
 	pub targets: Vec<SocketAddr>
 }
 

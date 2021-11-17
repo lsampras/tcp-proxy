@@ -5,6 +5,22 @@ usage
 cargo run -- --ports <list of ports to proxy> --config_port <config server port> --rules <configuration file>
 ```
 
+Cargo help
+```
+proxy 0.1.0
+
+USAGE:
+    main [OPTIONS]
+
+FLAGS:
+    -h, --help       Prints help information
+    -V, --version    Prints version information
+
+OPTIONS:
+        --config_port <config_port>    The port on which the http configuration server would run [default: 8001]
+        --ports <ports>...             List of ports that the proxy should listen to [default: 3000]
+        --rules <rules_path>           Configuration for connection routing logic [default: config.json]
+```
 This proxy listens on a list of ports provided via cli,
 
 It also start a configuration server that can be used to change the state of the proxy or issue commands to it.
