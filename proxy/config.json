@@ -3,12 +3,12 @@
         {
             "source": "192.168.0.1",
             "res": "response",
-            "destination": "127.0.0.1:4001"
+            "targets": ["127.0.0.1:4001"]
         },
         {
             "source": "127.0.0.1",
             "res": "response",
-            "destination": "127.0.0.1:4000"
+            "targets": ["127.0.0.1:4000"]
         }
     ]
 }

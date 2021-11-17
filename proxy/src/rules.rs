@@ -5,7 +5,7 @@ use serde_json::{self, Error};
 pub struct Rule {
 	pub source: IpAddr,
 	pub res: String,
-	pub destination: SocketAddr
+	pub targets: Vec<SocketAddr>
 }
 
 pub type Rules = Vec<Rule>;
