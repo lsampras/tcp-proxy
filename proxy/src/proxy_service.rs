@@ -1,6 +1,5 @@
 use std::{net::{SocketAddr}, sync::{Arc}};
 use crate::rules::{Configuration};
-use futures::lock;
 use tokio::{io::AsyncWriteExt, join, net::TcpStream, sync::{Mutex,RwLock}};
 use std::io::ErrorKind::WouldBlock;
 
@@ -31,6 +30,7 @@ impl ProxyService {
 					// using input order as priority order here 
 					// i.e the closest/fastest target is the first in the list
 					// use tokio select incase no priority is given
+					// Could also add pre-processing when the rules are updated to determine targets
 					if let Ok(stream) = TcpStream::connect(target).await {
 						return Some(stream)
 					}
@@ -43,8 +43,6 @@ impl ProxyService {
 	async fn pipe_streams(&self, from:Arc<Mutex<TcpStream>>, to:Arc<Mutex<TcpStream>>) {
 		let mut read_pending = true;
 		let mut write_pending = false;
-		// let from_addr = from.lock().await.peer_addr().unwrap().to_string();
-		// let to_addr = to.lock().await.peer_addr().unwrap().to_string();
 		while read_pending || write_pending {
 
 			let mut read_msg = vec![0; 1024];

@@ -40,6 +40,7 @@ impl ProxyServer {
 				}
 				let mut handles = vec![];
 				if let Some(listener) = tcp_connection {
+					println!("Listening on: {:?}", &addr);
 					while should_listen.read().await.to_owned() {
 						let config_clone = config.clone();
 						let (stream, addr) = listener.accept().await.unwrap();
@@ -79,7 +80,7 @@ impl ProxyServer {
 				break;
 			}
 		}
-		println!("config port acquired");
+		println!("Config server listening on: {:?}", config_addr);
 		let server = Server::from_tcp(tcp_connection.into_std().unwrap()).unwrap().serve(make_svc);
 		let graceful = server.with_graceful_shutdown(async {receiver.recv().await;});
 		let (_, config) = join(proxy_handle, graceful).await;
@@ -100,11 +101,11 @@ impl ProxyServer {
 		match (req.method(), req.uri().path()) {
 			(&Method::GET, "/routes") => ProxyServer::generate_response(config.read().await.to_json().unwrap()),
 			(&Method::POST, "/routes") => {
+				// this currently only accepts a list of targets that are assumed to be in priority
 				let data: String = str::from_utf8(to_bytes(req.into_body()).await.unwrap().as_ref()).unwrap().into();
-				// println!("{}", &data);
 				let new_config = Configuration::from_json(data).unwrap();
 				{
-					// use this block to restrict the write lock reference
+					// use this block to restrict the limit the write lock reference
 					let mut mutex_val = config.write().await;
 					*mutex_val = new_config;
 				}
@@ -118,7 +119,7 @@ impl ProxyServer {
 					*mutex_val = false;
 				}
 				trigger.lock().await.send(true).await.unwrap();
-				ProxyServer::generate_response("{\"message\": \"Hello route\"}".into())
+				ProxyServer::generate_response("{\"message\": \"Stopping server\"}".into())
 			},
 			_ => ProxyServer::generate_response("{\"message\": \"Hello world\"}".into())
 		}.await
